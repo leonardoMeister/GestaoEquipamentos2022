@@ -8,12 +8,12 @@ namespace GestaoEquipamentos2022
         {
             CadastrarDadosTestesEquipamentos();
             CadastrarDadosTestesChamados();
+            CadastrarDadosTestesSolicitantes();
 
             ExecutarPrograma();
         }
-
+       
         #region    EQUIPAMENTOS
-
         #region DECLARACAO DE VARIAVEIS EQUIPAMENTO
         static public string[] nomeEquipamento = new string[1000];
         static public double[] precoAquisicao = new double[1000];
@@ -25,8 +25,6 @@ namespace GestaoEquipamentos2022
         static public int gerenciadorIdsEquipamentos = 1;
         static public int[] id_do_chamado_em_equipamento = new int[1000];
         #endregion
-
-        #region METODOS DE EQUIPAMENTOS
         static public bool RemoverEquipamento()
         {
             Console.Clear();
@@ -82,8 +80,6 @@ namespace GestaoEquipamentos2022
         }
         private static void PassarItensParaFrenteEquipamentos(int index)
         {
-            int contadorAuxEquipe = 0;
-
             while (true)
             {
                 if (index == (nomeEquipamento.Length) - 1) break;
@@ -305,10 +301,13 @@ namespace GestaoEquipamentos2022
             }
         }
         #endregion
-        #endregion
+
+
+
 
         #region   CHAMADOS
         #region DECLARACAO DE VARIAVEIS DO CHAMADO
+        static public int[] id_do_solicitante_em_chamado = new int[1000];
         static public int[] id_do_equipamento_em_chamado = new int[1000];
         static public int contadorChamados = 0;
         static public int gerenciadorIdsChamados = 1;
@@ -542,6 +541,264 @@ namespace GestaoEquipamentos2022
         }
         #endregion
 
+
+
+
+        #region SOLICITANTES    
+        #region DECLARACAO DE VARIAVEIS SOLICITANTES
+        static public int[] id_do_chamado_em_solicitante = new int[1000];
+        static public int[] idSolicitante = new int[1000];
+        static public int contadorSolicitantes = 0;
+        static public int gerenciadorIdsSolicitantes = 1;
+        static public string[] nomeSolicitante = new string[1000];
+        static public string[] emailSolicitante = new string[1000];
+        static public string[] numeroTelefoneSolicitante = new string[1000];
+        #endregion
+        private static void PassarItensParaFrenteSolicitantes(int index)
+        {
+            while (true)
+            {
+                if (index == (nomeSolicitante.Length) - 1) break;
+                if (nomeSolicitante[(index) + 1] == null) break;
+
+                nomeSolicitante[index] = nomeSolicitante[(index) + 1];
+                emailSolicitante[index] = emailSolicitante[(index) + 1];
+                idSolicitante[index] = idSolicitante[(index) + 1];
+                id_do_chamado_em_solicitante[index] = id_do_chamado_em_solicitante[(index) + 1];
+                numeroTelefoneSolicitante[index] = numeroTelefoneSolicitante[(index) + 1];
+
+                index++;
+            }
+        }
+        private static bool RemovendoValoresVetoresSolicitantes(int index)
+        {
+            if (id_do_chamado_em_solicitante[index] != 0) return true;
+
+            nomeSolicitante[index] = null;
+            emailSolicitante[index] = null;
+            numeroTelefoneSolicitante[index] = null;
+            idSolicitante[index] =0;
+            id_do_chamado_em_solicitante[index] = 0;
+            contadorSolicitantes--;
+            return false;
+        }
+        private static int LocalizarSolicitante()
+        {
+            while (true)
+            {
+                int id = 0;
+
+                Console.Clear();
+
+                Console.WriteLine("LOCALIZADOR DE SOLICITANTES:");
+                Console.WriteLine("---------------------------");
+
+                Console.WriteLine("Informe o Id Solicitante: ");
+                id = Convert.ToInt32(Console.ReadLine());
+
+                for (int x = 0; x < contadorSolicitantes; x++)
+                {
+                    if (idSolicitante[x] == id)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("SOLICITANTE LOCALIZADO COM SUCESSO!");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        return x;
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("NENHUM SOLICITANTE ENCONTRADO!\nTente Novamente.");
+                Console.ResetColor();
+                Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
+                Console.ReadKey();
+                Console.Clear();
+                return -1;
+
+            }
+        }
+        private static void CadastrarDadosTestesSolicitantes()
+        {
+            idSolicitante[contadorSolicitantes] = gerenciadorIdsSolicitantes;
+            nomeSolicitante[contadorSolicitantes] = "Solicitante 1";
+            emailSolicitante[contadorSolicitantes] = "emailSolicitante1";
+            numeroTelefoneSolicitante[contadorSolicitantes] = "TelefoneSolicitante1";
+            contadorSolicitantes++;
+            gerenciadorIdsSolicitantes++;
+
+            idSolicitante[contadorSolicitantes] = gerenciadorIdsSolicitantes;
+            nomeSolicitante[contadorSolicitantes] = "Solicitante 2";
+            emailSolicitante[contadorSolicitantes] = "emailSolicitante2";
+            numeroTelefoneSolicitante[contadorSolicitantes] = "TelefoneSolicitante2";
+            contadorSolicitantes++;
+            gerenciadorIdsSolicitantes++;
+
+            idSolicitante[contadorSolicitantes] = gerenciadorIdsSolicitantes;
+            nomeSolicitante[contadorSolicitantes] = "Solicitante 3";
+            emailSolicitante[contadorSolicitantes] = "emailSolicitante3";
+            numeroTelefoneSolicitante[contadorSolicitantes] = "TelefoneSolicitante3";
+            contadorSolicitantes++;
+            gerenciadorIdsSolicitantes++;
+        }
+        private static int PegarIndexSolicitantePeloId(int idBusca)
+        {
+            for (int x = 0; x < contadorSolicitantes; x++)
+            {
+                if (idSolicitante[x] == idBusca) return x;
+            }
+            return -1;
+        }
+        private static bool EditarSolicitantes()
+        {
+            Console.Clear();
+            int index = 0;
+            index = LocalizarSolicitante();
+            if (index == -1) return false;
+
+            CadastarNovoSolicitanteOuEditar(0, index);
+            return true;
+        }
+        private static void RemoverSolicitantes()
+        {
+            Console.Clear();
+            int index = 0;
+            index = LocalizarSolicitante();
+            if (index == -1) return; 
+
+            if (RemovendoValoresVetoresSolicitantes(index))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("NÃO PODE REMOVER SOLICITANTE VINCULADO A UM CHAMADO.");
+                Console.ResetColor();
+                Console.WriteLine("PRESS ENTER TO CONTINUE...");
+                Console.ReadKey();
+                Console.Clear();
+                return ;
+            }
+
+            PassarItensParaFrenteSolicitantes(index);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("REMOÇÃO FEITA COM SUCESSO!");
+            Console.ResetColor();
+            Console.WriteLine("PRESS ENTER TO CONTINUE...");
+            Console.ReadKey();
+            Console.Clear();
+
+            return;
+        }
+        private static void MostrarSolicitantes()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("LISTA DE SOLICITANTES:");
+            Console.WriteLine("----------------------");
+            Console.ResetColor();
+            for (int x = 0; x < contadorSolicitantes; x++)
+            {
+                Console.Write($"Nome: {nomeSolicitante[x]}\n");
+                Console.Write($"Telefone: {numeroTelefoneSolicitante[x]}\n");
+                Console.Write($"Email: {emailSolicitante[x]}\n");
+                Console.Write($"Id: {idSolicitante[x]}\n");
+
+                if (id_do_chamado_em_solicitante[x] != 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("DADOS DO CHAMADO VINCULADO AO SOLICITANTE: ");
+                    Console.WriteLine("-----------------------------------------------");
+                    Console.ResetColor();
+
+                    int indexChamado = PegarIndexChamadoPeloId(id_do_chamado_em_solicitante[x]);
+                    Console.Write($"Titulo: {tituloChamado[indexChamado]}\n");
+                    Console.Write($"Data abertura: {dataAberturaChamado[indexChamado]}\n");
+                    Console.Write($"Tempo aberto: {(DateTime.Now - dataAberturaChamado[indexChamado]).Days }\n");
+                    Console.Write($"Id Chamado: {idChamado[indexChamado]}\n");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("DADOS DO EQUIPAMENTO VINCULADO AO SOLICITANTE: ");
+                    Console.WriteLine("-----------------------------------------------");
+                    Console.ResetColor();
+
+                    int indexEquipamento = PegarIndexEquipamentoPeloId(id_do_equipamento_em_chamado[indexChamado]);
+
+                    Console.Write($"Nome: {nomeEquipamento[indexEquipamento]}\n");
+                    Console.Write($"Preço: {precoAquisicao[indexEquipamento]}\n");
+                    Console.Write($"Serie: {numeroSerie[indexEquipamento]}\n");
+                    Console.Write($"Data Fab: {dataFabricacao[indexEquipamento]}\n");
+                    Console.Write($"Fabricante: {fabricante[indexEquipamento]}\n");
+                    Console.Write($"Id: {idEquipamento[indexEquipamento]}\n");
+
+                }
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("\n----------------------------------------\n");
+                Console.ResetColor();
+            }
+            Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
+            Console.ReadKey();
+        }
+        private static void CadastarNovoSolicitanteOuEditar(int opcao, int index = 0)
+        {
+            while (true)
+            {
+                Console.Clear();
+                if (opcao == 1) Console.WriteLine("CADASTRO DE SOLICITANTES!");
+                else Console.WriteLine("EDICAO DE SOLICITANTES!");
+
+                Console.WriteLine("\nInforme o nome do Solicitante: ");
+                string nome = Console.ReadLine();
+                if (nome.Length < 6)
+                {
+                    Console.WriteLine("Nome muito curto Tente Novamente! ");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                Console.WriteLine("\nInforme o Email do Solicitante: ");
+                string email = Console.ReadLine();
+
+                Console.WriteLine("\nInforme o Numero Telefone do Solicitante: ");
+                string numTelefone = Console.ReadLine();
+
+
+                if (opcao == 1)
+                {
+                    nomeSolicitante[contadorSolicitantes] = nome;
+                    emailSolicitante[contadorSolicitantes] = email;
+                    numeroTelefoneSolicitante[contadorSolicitantes] = numTelefone;
+
+                    idSolicitante[contadorSolicitantes] = gerenciadorIdsSolicitantes;
+                    contadorSolicitantes++;
+                    gerenciadorIdsSolicitantes++;
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nSOLICITANTE ADICIONADO COM SUCESSO!");
+                }
+                else
+                {
+                    nomeSolicitante[index] = nome;
+                    emailSolicitante[index] = email;
+                    numeroTelefoneSolicitante[index] = numTelefone; 
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nSOLICITANTE EDITADO COM SUCESSO!");
+                }
+
+                Console.ResetColor();
+                Console.WriteLine("PRESS ENTER TO CONTINUE...");
+                Console.ReadKey();
+                Console.Clear();
+                return;
+            }
+        }
+        #endregion
+
+
+
+
+
+
         private static void ExecutarPrograma()
         {
             while (true)
@@ -591,12 +848,27 @@ namespace GestaoEquipamentos2022
                                 EditarChamados();
                                 break;
                         }
+                    else if (opcaoMenu == 3)
+                        switch (opcaoSubmenu)
+                        {
+                            case 1:
+                                CadastarNovoSolicitanteOuEditar(1);
+                                break;
+                            case 2:
+                                MostrarSolicitantes();
+                                break;
+                            case 3:
+                                RemoverSolicitantes();
+                                break;
+                            case 4:
+                                EditarSolicitantes();
+                                break;
+                        }
                     #endregion
                 }
 
             }
         }
-
         #region OPCOES  DE ESCRITAS E MENU
         static public int OpcaoSubMenu(int opcao)
         {
@@ -613,6 +885,9 @@ namespace GestaoEquipamentos2022
                         break;
                     case 2:
                         valorTexto = "Chamados";
+                        break;
+                    case 3:
+                        valorTexto = "Solicitantes";
                         break;
                 }
                 Console.WriteLine("-----------------------------");
@@ -660,10 +935,12 @@ namespace GestaoEquipamentos2022
                 Console.WriteLine("Para Navegar no Menu Equipamentos [1]. ");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Para Navegar no Menu Chamados [2]. ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Para Navegar no Menu Solicitantes [3]. ");
                 Console.ResetColor();
                 opcao = Convert.ToInt32(Console.ReadLine());
 
-                if (opcao == 1 || opcao == 2)
+                if (opcao == 1 || opcao == 2 || opcao == 3)
                 {
                     Console.Clear();
                     return opcao;
