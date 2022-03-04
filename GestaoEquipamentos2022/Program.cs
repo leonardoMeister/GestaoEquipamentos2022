@@ -7,12 +7,12 @@ namespace GestaoEquipamentos2022
         static void Main(string[] args)
         {
             CadastrarDadosTestesEquipamentos();
-            CadastrarDadosTestesChamados();
             CadastrarDadosTestesSolicitantes();
+            CadastrarDadosTestesChamados();
 
             ExecutarPrograma();
         }
-       
+
         #region    EQUIPAMENTOS
         #region DECLARACAO DE VARIAVEIS EQUIPAMENTO
         static public string[] nomeEquipamento = new string[1000];
@@ -34,24 +34,13 @@ namespace GestaoEquipamentos2022
 
             if (RemovendoValoresVetoresEquipamentos(index))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("NÃO PODE REMOVER EQUIPAMENTO VINCULADO A UM CHAMADO.");
-                Console.ResetColor();
-                Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER("NÃO PODE REMOVER EQUIPAMENTO VINCULADO A UM CHAMADO.");
                 return false;
             }
 
             PassarItensParaFrenteEquipamentos(index);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("REMOÇÃO FEITA COM SUCESSO!");
-            Console.ResetColor();
-            Console.WriteLine("PRESS ENTER TO CONTINUE...");
-            Console.ReadKey();
-            Console.Clear();
-
+            ImprimaMaisFinalizacaoPRESSENTER("REMOÇÃO FEITA COM SUCESSO!", ConsoleColor.Green);
             return true;
         }
         static public bool EditarEquipamento()
@@ -192,8 +181,7 @@ namespace GestaoEquipamentos2022
                     contadorEquipamentos++;
                     gerenciadorIdsEquipamentos++;
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nEQUIPAMENTO ADICIONADO COM SUCESSO!");
+                    ImprimirColorido("\nEQUIPAMENTO ADICIONADO COM SUCESSO!", ConsoleColor.Green);
                 }
                 else
                 {
@@ -202,25 +190,16 @@ namespace GestaoEquipamentos2022
                     numeroSerie[index] = nunSerie;
                     dataFabricacao[index] = data;
                     fabricante[index] = stringFabricante;
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nEQUIPAMENTO EDITADO COM SUCESSO!");
+                    ImprimirColorido("\nEQUIPAMENTO EDITADO COM SUCESSO!", ConsoleColor.Green);
                 }
-
-                Console.ResetColor();
-                Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER();
                 return true;
             }
         }
         static public void MostrarEquipamentos()
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("LISTA DE EQUIPAMENTOS:");
-            Console.WriteLine("----------------------");
-            Console.ResetColor();
+            ImprimirColorido("LISTA DE EQUIPAMENTOS:\n----------------------", ConsoleColor.Red);
             for (int x = 0; x < contadorEquipamentos; x++)
             {
                 Console.Write($"Nome: {nomeEquipamento[x]}\n");
@@ -232,10 +211,7 @@ namespace GestaoEquipamentos2022
 
                 if (id_do_chamado_em_equipamento[x] != 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("DADOS DO CHAMADO VINCULADO AO EQUIPAMENTO: ");
-                    Console.WriteLine("-----------------------------------------------");
-                    Console.ResetColor();
+                    ImprimirColorido("DADOS DO CHAMADO VINCULADO AO EQUIPAMENTO: \n-----------------------------------------------", ConsoleColor.Yellow);
 
                     int indexChamado = PegarIndexChamadoPeloId(id_do_chamado_em_equipamento[x]);
                     Console.Write($"Titulo: {tituloChamado[indexChamado]}\n");
@@ -246,12 +222,9 @@ namespace GestaoEquipamentos2022
 
 
                 }
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("\n----------------------------------------\n");
-                Console.ResetColor();
+                ImprimirColorido("\n--------------------------------------------------------------------------------------------\n", ConsoleColor.Blue);
             }
-            Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-            Console.ReadKey();
+            ImprimaMaisFinalizacaoPRESSENTER();
         }
         static public int PegarIndexEquipamentoPeloId(int idEquipe)
         {
@@ -281,23 +254,12 @@ namespace GestaoEquipamentos2022
                 {
                     if (nomeEquipamento[x].ToLower() == nome.ToLower() && idEquipamento[x] == id)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("EQUIPAMENTO LOCALIZADO COM SUCESSO!");
-                        Console.ResetColor();
-                        Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-                        Console.ReadKey();
-                        Console.Clear();
+                        ImprimaMaisFinalizacaoPRESSENTER("EQUIPAMENTO LOCALIZADO COM SUCESSO!", ConsoleColor.Green);
                         return x;
                     }
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("NENHUM EQUIPAMENTO ENCONTRADO!\nTente Novamente.");
-                Console.ResetColor();
-                Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER("NENHUM EQUIPAMENTO ENCONTRADO!\nTente Novamente.");
                 return -1;
-
             }
         }
         #endregion
@@ -309,6 +271,7 @@ namespace GestaoEquipamentos2022
         #region DECLARACAO DE VARIAVEIS DO CHAMADO
         static public int[] id_do_solicitante_em_chamado = new int[1000];
         static public int[] id_do_equipamento_em_chamado = new int[1000];
+        static public bool[] statusOpenClose = new bool[1000];
         static public int contadorChamados = 0;
         static public int gerenciadorIdsChamados = 1;
         static int[] idChamado = new int[1000];
@@ -340,11 +303,8 @@ namespace GestaoEquipamentos2022
         {
             while (true)
             {
-
                 int id = 0;
-
                 Console.Clear();
-
                 Console.WriteLine("LOCALIZADOR DE CHAMADOS:");
                 Console.WriteLine("---------------------------");
                 Console.WriteLine("Informe o Id Chamado desejado: ");
@@ -354,21 +314,11 @@ namespace GestaoEquipamentos2022
                 {
                     if (idChamado[x] == id)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("CHAMADO LOCALIZADO COM SUCESSO!");
-                        Console.ResetColor();
-                        Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-                        Console.ReadKey();
-                        Console.Clear();
+                        ImprimaMaisFinalizacaoPRESSENTER("CHAMADO LOCALIZADO COM SUCESSO!", ConsoleColor.Green);
                         return x;
                     }
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("NENHUM EQUIPAMENTO ENCONTRADO!\nTente Novamente.");
-                Console.ResetColor();
-                Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER("NENHUM EQUIPAMENTO ENCONTRADO!\nTente Novamente.");
                 return -1;
 
             }
@@ -387,13 +337,7 @@ namespace GestaoEquipamentos2022
 
             PassarItensParaFrenteChamados(index);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("REMOÇÃO FEITA COM SUCESSO!");
-            Console.ResetColor();
-            Console.WriteLine("PRESS ENTER TO CONTINUE...");
-            Console.ReadKey();
-            Console.Clear();
-
+            ImprimaMaisFinalizacaoPRESSENTER("REMOÇÃO FEITA COM SUCESSO!", ConsoleColor.Green);
             return true;
         }
         private static void PassarItensParaFrenteChamados(int index)
@@ -421,22 +365,48 @@ namespace GestaoEquipamentos2022
             }
             return -1;
         }
+        private static int PegaroOpcaoFiltroChamados()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("INFORME A OPCAO PARA FILTRO.");
+                Console.WriteLine("Mostragem normal [1]");
+                Console.WriteLine("Mostragem filtro Abertos [2]");
+                Console.WriteLine("Mostragem filtro Fechados [3]");
+
+                int opcao = Convert.ToInt32(Console.ReadLine());
+
+                if (opcao != 1 && opcao != 2 && opcao != 3)
+                {
+                    ImprimaMaisFinalizacaoPRESSENTER("OPCAO INVÁLIDA");
+                    continue;
+                }
+                return opcao;
+            }
+        }
         private static void MostrarChamados()
         {
+            int opcaoFiltro = PegaroOpcaoFiltroChamados();
+
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("LISTA DE CHAMADOS:");
-            Console.WriteLine("----------------------\n");
-            Console.ResetColor();
+            ImprimirColorido("LISTA DE CHAMADOS: ", ConsoleColor.Red);
+            ImprimirColorido("----------------------\n", ConsoleColor.Red);
+
             for (int x = 0; x < contadorChamados; x++)
             {
+                //FILTROS DE FECHADO E ABERTO
+                if (opcaoFiltro == 2 && statusOpenClose[x] != true) continue;
+                if (opcaoFiltro == 3 && statusOpenClose[x] == true) continue;
+
                 Console.Write($"Titulo: {tituloChamado[x]}\n");
                 Console.Write($"Data abertura: {dataAberturaChamado[x]}\n");
                 Console.Write($"Tempo aberto: {(DateTime.Now - dataAberturaChamado[x]).Days }\n");
+                string aux = (statusOpenClose[x] == true) ? "Aberto" : "fechado";
+                Console.Write($"Status: { aux}\n");
                 Console.Write($"Id Chamado: {idChamado[x]}\n");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"DADOS EQUIPAMENTO VINCULADO:\n------------------------------------------\n");
-                Console.ResetColor();
+
+                ImprimirColorido("DADOS EQUIPAMENTO VINCULADO:\n------------------------------------------\n", ConsoleColor.Yellow);
                 int indexEquipamento = PegarIndexEquipamentoPeloId(id_do_equipamento_em_chamado[x]);
                 Console.Write($"Nome: {nomeEquipamento[indexEquipamento]} \n");
                 Console.Write($"Preço: {precoAquisicao[indexEquipamento]}\n");
@@ -444,12 +414,18 @@ namespace GestaoEquipamentos2022
                 Console.Write($"Data Fab: {dataFabricacao[indexEquipamento]}\n");
                 Console.Write($"Fabricante: {fabricante[indexEquipamento]}\n");
                 Console.Write($"Id: {idEquipamento[indexEquipamento]}\n");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("\n----------------------------------------\n");
+
+                ImprimirColorido("DADOS SOLICITANTE VINCULADO:\n------------------------------------------\n", ConsoleColor.Green);
+                int indexSolicitante = PegarIndexSolicitantePeloId(id_do_solicitante_em_chamado[x]);
                 Console.ResetColor();
+                Console.Write($"Nome: {nomeSolicitante[indexSolicitante]}\n");
+                Console.Write($"Telefone: {numeroTelefoneSolicitante[indexSolicitante]}\n");
+                Console.Write($"Email: {emailSolicitante[indexSolicitante]}\n");
+                Console.Write($"Id: {idSolicitante[indexSolicitante]}\n");
+
+                ImprimirColorido("\n------------------------------------------------------------------------------------------------------------------\n", ConsoleColor.Blue);
             }
-            Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-            Console.ReadKey();
+            ImprimaMaisFinalizacaoPRESSENTER();
         }
         private static void CadastarNovoChamadoOuEditar(int opcao, int index = 0)
         {
@@ -467,15 +443,15 @@ namespace GestaoEquipamentos2022
 
                 DateTime data = DateTime.Now;
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("DADOS COLETADOS COM SUCESSO!\n");
-                Console.WriteLine("PARA FINALIZAR LOCALIZE O EQUIPAMENTO DESEJADO.");
-                Console.ResetColor();
-                Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
+                string str = "DADOS COLETADOS COM SUCESSO!\nPARA CONTINUAR LOCALIZE O EQUIPAMENTO DESEJADO.\n";
+                ImprimaMaisFinalizacaoPRESSENTER(str, ConsoleColor.Green);
 
                 int indexIdEquipamento = LocalizarEquipamento();
 
+                str = "EQUIPAMENTO COLETADO COM SUCESSO!\nPARA CONTINUAR LOCALIZE O SOLICITANTE DESEJADO.\n";
+                ImprimaMaisFinalizacaoPRESSENTER(str, ConsoleColor.Green);
+
+                int indexIdSolicitante = LocalizarSolicitante();
 
                 if (opcao == 1)
                 {
@@ -483,16 +459,18 @@ namespace GestaoEquipamentos2022
                     descricaoChamado[contadorChamados] = descricao;
                     dataAberturaChamado[contadorChamados] = data;
                     idChamado[contadorChamados] = gerenciadorIdsChamados;
+                    statusOpenClose[contadorChamados] = true;
 
                     id_do_equipamento_em_chamado[contadorChamados] = idEquipamento[indexIdEquipamento];
                     id_do_chamado_em_equipamento[indexIdEquipamento] = idChamado[contadorChamados];
 
+                    id_do_solicitante_em_chamado[contadorChamados] = idSolicitante[indexIdSolicitante];
+                    id_do_chamado_em_solicitante[indexIdSolicitante] = idChamado[contadorChamados];
+
                     contadorChamados++;
                     gerenciadorIdsChamados++;
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nCHAMADO ADICIONADO COM SUCESSO!");
-                    Console.WriteLine("\nDADOS EQUIPAMENTO VINCULADO A CHAMADO ATUALIZADOS COM SUCESSO!");
+                    ImprimirColorido("\nCHAMADO ADICIONADO COM SUCESSO!\n\nDADOS EQUIPAMENTO VINCULADO A CHAMADO ATUALIZADOS COM SUCESSO!", ConsoleColor.Green);
                 }
                 else
                 {
@@ -507,15 +485,9 @@ namespace GestaoEquipamentos2022
                     id_do_equipamento_em_chamado[index] = idEquipamento[indexIdEquipamento];
                     id_do_chamado_em_equipamento[indexIdEquipamento] = idChamado[index];
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nCHAMADO EDITADO COM SUCESSO!");
-                    Console.WriteLine("\nDADOS EQUIPAMENTO VINCULADO A CHAMADO ATUALIZADOS COM SUCESSO!");
+                    ImprimirColorido("\nCHAMADO EDITADO COM SUCESSO!\n\nDADOS EQUIPAMENTO VINCULADO A CHAMADO ATUALIZADOS COM SUCESSO!", ConsoleColor.Green);
                 }
-
-                Console.ResetColor();
-                Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER();
                 return;
             }
         }
@@ -527,6 +499,10 @@ namespace GestaoEquipamentos2022
             idChamado[contadorChamados] = gerenciadorIdsChamados;
             id_do_equipamento_em_chamado[contadorChamados] = 1;
             id_do_chamado_em_equipamento[0] = idChamado[contadorChamados];
+            statusOpenClose[contadorChamados] = true;
+            id_do_solicitante_em_chamado[contadorChamados] = 1;
+            id_do_chamado_em_solicitante[0] = idChamado[contadorChamados];
+
             contadorChamados++;
             gerenciadorIdsChamados++;
 
@@ -536,8 +512,27 @@ namespace GestaoEquipamentos2022
             idChamado[contadorChamados] = gerenciadorIdsChamados;
             id_do_equipamento_em_chamado[contadorChamados] = 2;
             id_do_chamado_em_equipamento[1] = idChamado[contadorChamados];
+            statusOpenClose[contadorChamados] = true;
+            id_do_solicitante_em_chamado[contadorChamados] = 2;
+            id_do_chamado_em_solicitante[1] = idChamado[contadorChamados];
+
             contadorChamados++;
             gerenciadorIdsChamados++;
+        }
+        private static void AbrirFecharChamado()
+        {
+            Console.Clear();
+            Console.WriteLine("Para Fechar chamado [1] ");
+            Console.WriteLine("Para Reabrir chamado [2] ");
+            int opcao = Convert.ToInt16(Console.ReadLine());
+            Console.Clear();
+
+            int indexChamado = LocalizarChamado();
+
+            if (opcao == 1) statusOpenClose[indexChamado] = false;
+            else if (opcao == 2) statusOpenClose[indexChamado] = true;
+
+            ImprimaMaisFinalizacaoPRESSENTER("OPERAÇÃO REALIZADA COM SUCESSO!", ConsoleColor.Green);
         }
         #endregion
 
@@ -577,7 +572,7 @@ namespace GestaoEquipamentos2022
             nomeSolicitante[index] = null;
             emailSolicitante[index] = null;
             numeroTelefoneSolicitante[index] = null;
-            idSolicitante[index] =0;
+            idSolicitante[index] = 0;
             id_do_chamado_em_solicitante[index] = 0;
             contadorSolicitantes--;
             return false;
@@ -665,37 +660,26 @@ namespace GestaoEquipamentos2022
             Console.Clear();
             int index = 0;
             index = LocalizarSolicitante();
-            if (index == -1) return; 
+            if (index == -1) return;
 
             if (RemovendoValoresVetoresSolicitantes(index))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("NÃO PODE REMOVER SOLICITANTE VINCULADO A UM CHAMADO.");
-                Console.ResetColor();
-                Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
-                return ;
+                ImprimaMaisFinalizacaoPRESSENTER("NÃO PODE REMOVER SOLICITANTE VINCULADO A UM CHAMADO.", ConsoleColor.Red);
+                return;
             }
 
             PassarItensParaFrenteSolicitantes(index);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("REMOÇÃO FEITA COM SUCESSO!");
-            Console.ResetColor();
-            Console.WriteLine("PRESS ENTER TO CONTINUE...");
-            Console.ReadKey();
-            Console.Clear();
-
+            ImprimaMaisFinalizacaoPRESSENTER("REMOÇÃO FEITA COM SUCESSO!", ConsoleColor.Green);
             return;
         }
         private static void MostrarSolicitantes()
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("LISTA DE SOLICITANTES:");
-            Console.WriteLine("----------------------");
-            Console.ResetColor();
+
+            ImprimirColorido("LISTA DE SOLICITANTES:", ConsoleColor.Red);
+            ImprimirColorido("----------------------:", ConsoleColor.Red);
+
             for (int x = 0; x < contadorSolicitantes; x++)
             {
                 Console.Write($"Nome: {nomeSolicitante[x]}\n");
@@ -705,10 +689,9 @@ namespace GestaoEquipamentos2022
 
                 if (id_do_chamado_em_solicitante[x] != 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("DADOS DO CHAMADO VINCULADO AO SOLICITANTE: ");
-                    Console.WriteLine("-----------------------------------------------");
-                    Console.ResetColor();
+
+                    ImprimirColorido("DADOS DO CHAMADO VINCULADO AO SOLICITANTE: ", ConsoleColor.Yellow);
+                    ImprimirColorido("-----------------------------------------------: ", ConsoleColor.Yellow);
 
                     int indexChamado = PegarIndexChamadoPeloId(id_do_chamado_em_solicitante[x]);
                     Console.Write($"Titulo: {tituloChamado[indexChamado]}\n");
@@ -716,10 +699,8 @@ namespace GestaoEquipamentos2022
                     Console.Write($"Tempo aberto: {(DateTime.Now - dataAberturaChamado[indexChamado]).Days }\n");
                     Console.Write($"Id Chamado: {idChamado[indexChamado]}\n");
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("DADOS DO EQUIPAMENTO VINCULADO AO SOLICITANTE: ");
-                    Console.WriteLine("-----------------------------------------------");
-                    Console.ResetColor();
+                    ImprimirColorido("DADOS DO EQUIPAMENTO VINCULADO AO CHAMADO: ", ConsoleColor.Green);
+                    ImprimirColorido("-----------------------------------------------", ConsoleColor.Green);
 
                     int indexEquipamento = PegarIndexEquipamentoPeloId(id_do_equipamento_em_chamado[indexChamado]);
 
@@ -731,12 +712,9 @@ namespace GestaoEquipamentos2022
                     Console.Write($"Id: {idEquipamento[indexEquipamento]}\n");
 
                 }
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("\n----------------------------------------\n");
-                Console.ResetColor();
+                ImprimirColorido("\n----------------------------------------\n", ConsoleColor.Blue);
             }
-            Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-            Console.ReadKey();
+            ImprimaMaisFinalizacaoPRESSENTER();
         }
         private static void CadastarNovoSolicitanteOuEditar(int opcao, int index = 0)
         {
@@ -779,7 +757,7 @@ namespace GestaoEquipamentos2022
                 {
                     nomeSolicitante[index] = nome;
                     emailSolicitante[index] = email;
-                    numeroTelefoneSolicitante[index] = numTelefone; 
+                    numeroTelefoneSolicitante[index] = numTelefone;
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\nSOLICITANTE EDITADO COM SUCESSO!");
@@ -836,6 +814,22 @@ namespace GestaoEquipamentos2022
                         switch (opcaoSubmenu)
                         {
                             case 1:
+                                CadastarNovoSolicitanteOuEditar(1);
+                                break;
+                            case 2:
+                                MostrarSolicitantes();
+                                break;
+                            case 3:
+                                RemoverSolicitantes();
+                                break;
+                            case 4:
+                                EditarSolicitantes();
+                                break;
+                        }
+                    else if (opcaoMenu == 3)
+                        switch (opcaoSubmenu)
+                        {
+                            case 1:
                                 CadastarNovoChamadoOuEditar(1);
                                 break;
                             case 2:
@@ -847,21 +841,8 @@ namespace GestaoEquipamentos2022
                             case 4:
                                 EditarChamados();
                                 break;
-                        }
-                    else if (opcaoMenu == 3)
-                        switch (opcaoSubmenu)
-                        {
-                            case 1:
-                                CadastarNovoSolicitanteOuEditar(1);
-                                break;
-                            case 2:
-                                MostrarSolicitantes();
-                                break;
-                            case 3:
-                                RemoverSolicitantes();
-                                break;
-                            case 4:
-                                EditarSolicitantes();
+                            case 6:
+                                AbrirFecharChamado();
                                 break;
                         }
                     #endregion
@@ -884,10 +865,10 @@ namespace GestaoEquipamentos2022
                         valorTexto = "Equipamentos";
                         break;
                     case 2:
-                        valorTexto = "Chamados";
+                        valorTexto = "Solicitantes";
                         break;
                     case 3:
-                        valorTexto = "Solicitantes";
+                        valorTexto = "Chamados";
                         break;
                 }
                 Console.WriteLine("-----------------------------");
@@ -903,9 +884,21 @@ namespace GestaoEquipamentos2022
                 Console.WriteLine($"Para Edição de {valorTexto} [4]");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"Voltar ao Menu Principal [5]");
+
+                if (opcao == 3)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine($"Fechar ou Abrir chamado Existente [6]");
+                }
                 Console.ResetColor();
 
                 opcao2 = Convert.ToInt32(Console.ReadLine());
+
+                if (opcao2 == 6)
+                {
+                    Console.Clear();
+                    return opcao2;
+                }
                 if (opcao2 >= 1 && opcao2 <= 5)
                 {
                     Console.Clear();
@@ -934,9 +927,9 @@ namespace GestaoEquipamentos2022
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Para Navegar no Menu Equipamentos [1]. ");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Para Navegar no Menu Chamados [2]. ");
+                Console.WriteLine("Para Navegar no Menu Solicitantes [2]. ");
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("Para Navegar no Menu Solicitantes [3]. ");
+                Console.WriteLine("Para Navegar no Menu Chamados [3]. ");
                 Console.ResetColor();
                 opcao = Convert.ToInt32(Console.ReadLine());
 
@@ -957,6 +950,21 @@ namespace GestaoEquipamentos2022
                 Console.Clear();
 
             }
+        }
+        static public void ImprimaMaisFinalizacaoPRESSENTER(string text = "", ConsoleColor cor = ConsoleColor.Red)
+        {
+            Console.ForegroundColor = cor;
+            Console.WriteLine(text);
+            Console.ResetColor();
+            Console.WriteLine("PRESS ENTER TO CONTINUE...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+        static public void ImprimirColorido(string text, ConsoleColor cor)
+        {
+            Console.ForegroundColor = cor;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
         #endregion
     }
