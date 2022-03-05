@@ -529,6 +529,7 @@ namespace GestaoEquipamentos2022
 
             int indexChamado = LocalizarChamado();
 
+            if (indexChamado == -1) return;
             if (opcao == 1) statusOpenClose[indexChamado] = false;
             else if (opcao == 2) statusOpenClose[indexChamado] = true;
 
@@ -595,21 +596,11 @@ namespace GestaoEquipamentos2022
                 {
                     if (idSolicitante[x] == id)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("SOLICITANTE LOCALIZADO COM SUCESSO!");
-                        Console.ResetColor();
-                        Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-                        Console.ReadKey();
-                        Console.Clear();
+                        ImprimaMaisFinalizacaoPRESSENTER("SOLICITANTE LOCALIZADO COM SUCESSO!",ConsoleColor.Green);
                         return x;
                     }
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("NENHUM SOLICITANTE ENCONTRADO!\nTente Novamente.");
-                Console.ResetColor();
-                Console.WriteLine("\nPRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER("NENHUM SOLICITANTE ENCONTRADO!\nTente Novamente.");
                 return -1;
 
             }
@@ -664,7 +655,7 @@ namespace GestaoEquipamentos2022
 
             if (RemovendoValoresVetoresSolicitantes(index))
             {
-                ImprimaMaisFinalizacaoPRESSENTER("NÃO PODE REMOVER SOLICITANTE VINCULADO A UM CHAMADO.", ConsoleColor.Red);
+                ImprimaMaisFinalizacaoPRESSENTER("NÃO PODE REMOVER SOLICITANTE VINCULADO A UM CHAMADO.");
                 return;
             }
 
@@ -712,7 +703,7 @@ namespace GestaoEquipamentos2022
                     Console.Write($"Id: {idEquipamento[indexEquipamento]}\n");
 
                 }
-                ImprimirColorido("\n----------------------------------------\n", ConsoleColor.Blue);
+                ImprimirColorido("\n------------------------------------------------------------------------------------\n", ConsoleColor.Blue);
             }
             ImprimaMaisFinalizacaoPRESSENTER();
         }
@@ -750,23 +741,16 @@ namespace GestaoEquipamentos2022
                     contadorSolicitantes++;
                     gerenciadorIdsSolicitantes++;
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nSOLICITANTE ADICIONADO COM SUCESSO!");
+                    ImprimirColorido("\nSOLICITANTE ADICIONADO COM SUCESSO!", ConsoleColor.Green);
                 }
                 else
                 {
                     nomeSolicitante[index] = nome;
                     emailSolicitante[index] = email;
                     numeroTelefoneSolicitante[index] = numTelefone;
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nSOLICITANTE EDITADO COM SUCESSO!");
+                    ImprimirColorido("\nSOLICITANTE EDITADO COM SUCESSO!", ConsoleColor.Green);
                 }
-
-                Console.ResetColor();
-                Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                Console.ReadKey();
-                Console.Clear();
+                ImprimaMaisFinalizacaoPRESSENTER();
                 return;
             }
         }
@@ -874,21 +858,15 @@ namespace GestaoEquipamentos2022
                 Console.WriteLine("-----------------------------");
                 Console.WriteLine($"-- Gestão de {valorTexto}: --");
                 Console.WriteLine("-----------------------------\n");
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine($"Para Adição de {valorTexto} [1]");
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine($"Para Listagem dos {valorTexto} [2]");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"Para Remoção de {valorTexto} [3]");
-                Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                Console.WriteLine($"Para Edição de {valorTexto} [4]");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Voltar ao Menu Principal [5]");
+                ImprimirColorido($"Para Adição de {valorTexto} [1]",ConsoleColor.DarkGreen);
+                ImprimirColorido($"Para Listagem dos {valorTexto} [2]", ConsoleColor.DarkGray);
+                ImprimirColorido($"Para Remoção de {valorTexto} [3]", ConsoleColor.Cyan);
+                ImprimirColorido($"Para Edição de {valorTexto} [4]", ConsoleColor.DarkMagenta);
+                ImprimirColorido($"Voltar ao Menu Principal [5]", ConsoleColor.Yellow);
 
                 if (opcao == 3)
                 {
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine($"Fechar ou Abrir chamado Existente [6]");
+                    ImprimirColorido($"Fechar ou Abrir chamado Existente [6]", ConsoleColor.Magenta);
                 }
                 Console.ResetColor();
 
@@ -906,12 +884,7 @@ namespace GestaoEquipamentos2022
                 }
                 else
                 {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Valor Fora de escopo!\nTente Novamente");
-                    Console.ResetColor();
-                    Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                    Console.ReadKey();
-                    Console.Clear();
+                    ImprimaMaisFinalizacaoPRESSENTER("Valor Fora de escopo!\nTente Novamente");
                 }
 
 
@@ -924,13 +897,10 @@ namespace GestaoEquipamentos2022
             {
                 Console.WriteLine("Seja Bem Vindo ao Sistema Gestão Equipamentos 1.0 ! \n\n");
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Para Navegar no Menu Equipamentos [1]. ");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Para Navegar no Menu Solicitantes [2]. ");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("Para Navegar no Menu Chamados [3]. ");
-                Console.ResetColor();
+                ImprimirColorido("Para Navegar no Menu Equipamentos [1]. ", ConsoleColor.Yellow);
+                ImprimirColorido("Para Navegar no Menu Solicitantes [2]. ", ConsoleColor.Green);
+                ImprimirColorido("Para Navegar no Menu Chamados [3]. ", ConsoleColor.Blue);
+
                 opcao = Convert.ToInt32(Console.ReadLine());
 
                 if (opcao == 1 || opcao == 2 || opcao == 3)
@@ -940,12 +910,7 @@ namespace GestaoEquipamentos2022
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nValor Fora de escopo!\nTente Novamentezn");
-                    Console.ResetColor();
-                    Console.WriteLine("PRESS ENTER TO CONTINUE...");
-                    Console.ReadKey();
-                    Console.Clear();
+                    ImprimaMaisFinalizacaoPRESSENTER("\nValor Fora de escopo!\nTente Novamentezn");
                 }
                 Console.Clear();
 
@@ -954,7 +919,7 @@ namespace GestaoEquipamentos2022
         static public void ImprimaMaisFinalizacaoPRESSENTER(string text = "", ConsoleColor cor = ConsoleColor.Red)
         {
             Console.ForegroundColor = cor;
-            Console.WriteLine(text);
+            if (text != "") Console.WriteLine(text);
             Console.ResetColor();
             Console.WriteLine("PRESS ENTER TO CONTINUE...");
             Console.ReadKey();
